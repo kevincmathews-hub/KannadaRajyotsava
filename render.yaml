@@ -2,7 +2,7 @@ services:
   - type: web
     name: app
     env: python
-    region: oregon
+    region: india
     branch: master
     repo: https://github.com/kevincmathews-hub/KannadaRajyotsava
     buildCommand: pip install -r requirements.txt
