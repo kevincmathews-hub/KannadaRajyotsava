@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: app
+    env: python
+    region: oregon
+    branch: master
+    repo: https://github.com/kevincmathews-hub/KannadaRajyotsava
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn main:app
+    plan: free
