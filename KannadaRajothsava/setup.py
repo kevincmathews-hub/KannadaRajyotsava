@@ -33,22 +33,7 @@ def check_python_version():
 def install_dependencies():
     """Install required Python packages"""
     print("\n📦 Installing dependencies...")
-    
-    # Check if requirements.txt exists
-    requirements_file = Path(__file__).parent / 'requirements.txt'
-    if requirements_file.exists():
-        try:
-            print("   Installing from requirements.txt...")
-            subprocess.run([sys.executable, '-m', 'pip', 'install', '-r', 'requirements.txt'], 
-                         check=True, capture_output=True, text=True)
-            print("   ✅ All dependencies from requirements.txt installed successfully")
-            return True
-        except subprocess.CalledProcessError as e:
-            print(f"   ❌ Failed to install from requirements.txt: {e}")
-            # Fallback to manual installation
-    
-    # Fallback: Install individual packages
-    required_packages = ['Flask>=3.1.0', 'qrcode[pil]>=7.4.0', 'Pillow>=10.0.0']
+    required_packages = ['qrcode[pil]']
     
     for package in required_packages:
         try:
@@ -77,7 +62,7 @@ def check_directory_structure():
     print("\n📁 Checking directory structure...")
     
     required_dirs = ['html', 'images', 'videos', 'qr_network']
-    required_files = ['main.py', 'app.py', 'config.py', 'generate_qr.py']
+    required_files = ['start_server.py', 'generate_qr_network.py']
     
     script_dir = Path(__file__).parent
     
@@ -103,8 +88,8 @@ def generate_qr_codes():
     """Generate QR codes for the website"""
     print("\n🔳 Generating QR codes...")
     try:
-        subprocess.run([sys.executable, 'generate_qr.py'], 
-                      capture_output=True, text=True, check=True)
+        result = subprocess.run([sys.executable, 'generate_qr_network.py'], 
+                              capture_output=True, text=True, check=True)
         print("✅ QR codes generated successfully!")
         return True
     except subprocess.CalledProcessError as e:
@@ -113,14 +98,14 @@ def generate_qr_codes():
         print("Error:", e.stderr)
         return False
 
-def start_flask_server_background():
-    """Start the Flask server in background"""
-    print("\n🌐 Starting Flask web server...")
+def start_server_background():
+    """Start the server in background"""
+    print("\n🌐 Starting web server...")
     local_ip = get_local_ip()
     
     try:
-        # Start Flask server in background
-        process = subprocess.Popen([sys.executable, 'main.py'], 
+        # Start server in background
+        process = subprocess.Popen([sys.executable, 'start_server.py'], 
                                  stdout=subprocess.PIPE, 
                                  stderr=subprocess.PIPE)
         
@@ -129,17 +114,17 @@ def start_flask_server_background():
         
         # Check if server is running
         if process.poll() is None:
-            print("✅ Flask server started successfully!")
-            print("🔗 Local access: http://localhost:8000")
+            print("✅ Server started successfully!")
+            print(f"🔗 Local access: http://localhost:8000")
             print(f"🔗 Network access: http://{local_ip}:8000")
-            print("📱 Mobile access: Scan QR codes from qr_network/ folder")
+            print(f"📱 Mobile access: Scan QR codes from qr_network/ folder")
             return process
         else:
-            print("❌ Flask server failed to start")
+            print("❌ Server failed to start")
             return None
             
     except Exception as e:
-        print(f"❌ Error starting Flask server: {e}")
+        print(f"❌ Error starting server: {e}")
         return None
 
 def print_usage_instructions():
@@ -156,7 +141,7 @@ def print_usage_instructions():
     print("   3. Scan any QR code to access the website")
     
     print("\n💻 For Desktop Users:")
-    print("   • Local access: http://localhost:8000")
+    print(f"   • Local access: http://localhost:8000")
     print(f"   • Network access: http://{local_ip}:8000")
     
     print("\n📂 QR Codes Location:")
@@ -194,10 +179,10 @@ def main():
         print("\n❌ QR code generation failed!")
         sys.exit(1)
     
-    # Step 5: Start Flask server
-    server_process = start_flask_server_background()
+    # Step 5: Start server
+    server_process = start_server_background()
     if not server_process:
-        print("\n❌ Flask server startup failed!")
+        print("\n❌ Server startup failed!")
         sys.exit(1)
     
     # Step 6: Print instructions

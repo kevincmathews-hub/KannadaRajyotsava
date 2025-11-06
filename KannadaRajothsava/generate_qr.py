@@ -44,7 +44,7 @@ def create_network_qr_code(url, filename, output_dir):
         return None
 
 def main():
-    print("Generating Network QR Codes for Kannada Rajyotsava Flask Website")
+    print("Generating Network QR Codes for Kannada Rajyotsava Website")
     print("=" * 60)
     
     # Configuration - Auto-detect IP or use fallback
@@ -100,16 +100,11 @@ def main():
     print(f"QR codes saved in: {qr_output_dir}")
     print()
     print("Usage Instructions:")
-    print("   1. Start the Flask server: python main.py")
-    print(f"   2. Ensure your Flask server is running on {BASE_URL}")
+    print("   1. Start the server: python start_server.py")
+    print(f"   2. Ensure your server is running on {BASE_URL}")
     print("   3. Print these QR codes and display them at your event")
     print("   4. Visitors must be connected to the same WiFi network")
     print("   5. Visitors can scan QR codes to access pages on their mobile devices")
-    print()
-    print("Alternative ways to start the server:")
-    print("   • Using main.py: python main.py")
-    print("   • Using run.py: python run.py")
-    print("   • Using Flask CLI: set FLASK_APP=app.py && flask run --host=0.0.0.0 --port=8000")
     print()
     print("If your IP address changes:")
     print("   - Re-run this script to generate new QR codes with updated IP")
